@@ -4,7 +4,7 @@ public class SkipList{
 
   private SkipListNode head;
   int num_levels = 1;
-  private static int MAX_NUM_LEVELS = 10;
+  private static int MAX_NUM_LEVELS = 15;
 
   public SkipList(SkipListNode head){
     this.head = head;
@@ -28,7 +28,7 @@ public class SkipList{
   /**
   * flipCoin() returns a boolean value at Psuedo-Random
   */
-  public static boolean flipCoin(){
+  private static boolean flipCoin(){
     Random rand = new Random();
     int result = rand.nextInt(2);//returns 0 or 1
     if(result == 1){
@@ -41,9 +41,10 @@ public class SkipList{
   * addToHigherLevels() is a helper function for insert()
   * recursively adds a node to higher levels
   * @param SkipListNode node to be added
+  * @param allLevels flag set to true if node is to be inserted into all higher levels
   */
-  private void addToHigherLevels(SkipListNode node){
-    if(flipCoin()){//only add node to higher levels sometimes
+  private void addToHigherLevels(SkipListNode node, int currLevel, boolean allLevels){
+    if(!allLevels || flipCoin() || currLevel >= MAX_NUM_LEVELS){//only add node to higher levels sometimes
       return;
     }
     if(node == null){
@@ -73,7 +74,7 @@ public class SkipList{
       traversal = traversal.right;
     }
 
-    addToHigherLevels(higherLevel);
+    addToHigherLevels(higherLevel, currLevel+1, allLevels);
   }
 
   /**
@@ -98,6 +99,7 @@ public class SkipList{
     node.right = nUp;
   }
 
+
   /**
   * insertFrontOfList() is a helped function for insert()
   * inserts a node into the front of the list
@@ -107,7 +109,35 @@ public class SkipList{
     head.left = node;
     node.right = head;
     head = node;
-    addToHigherLevels(node);
+    updateHeadLevels();
+    //addToHigherLevels(node, 1, true);
+  }
+
+  /**
+  * updateHeadLevels() is a helper function for insertFrontOfList()
+  * ensures that the head is present on all levels of the list
+  */
+  private void updateHeadLevels(){
+    SkipListNode pointer = head;
+    int level = 1;
+    while(pointer.up != null){
+      pointer = pointer.up;
+      level++;
+    }
+    updateHeadLevels(pointer, level);
+  }
+
+  private void updateHeadLevels(SkipListNode node, int level){
+    if(node.up != null){
+      System.err.println("error: incorrect call of updateHeadLevels()");
+    }
+    while(level < MAX_NUM_LEVELS){
+      SkipListNode up = new SkipListNode(node.item);
+      node.up = up;
+      level++;
+      node = node.up;
+    }
+
   }
 
   /**
@@ -126,13 +156,18 @@ public class SkipList{
       location.right = node;
       node.left = location;
     }
-    addToHigherLevels(node);
+    addToHigherLevels(node, 1, false);
   }
 
   /**
   * insert() inserts a node into the list
   * @param SkipListNode node to be inserted
   */
+  public void insert(String name){
+    SkipListNode node = new SkipListNode(name);
+    insert(node);
+  }
+
   public void insert(SkipListNode node){
     if(isEmpty()){
       this.head = node;
@@ -316,22 +351,22 @@ public class SkipList{
 
   public static void main(String[] args){ //used for testing purposes
     SkipList test = new SkipList();
-    SkipListNode testNode = new SkipListNode("test pass");
-    SkipListNode testNode2 = new SkipListNode("zzzz");
-    SkipListNode testNode3 = new SkipListNode("abc");
-    SkipListNode testNode4 = new SkipListNode("aaa");
-    test.insert(testNode);
-    test.insert(testNode2);
-    test.insert(testNode3);
-    test.insert(testNode4);
-    test.delete("abc");
-    boolean empt = test.isEmpty();
-    boolean coinTest = flipCoin();
-    System.out.println(coinTest);
-    coinTest = flipCoin();
-    System.out.println(coinTest);
-    coinTest = flipCoin();
-    System.out.println(coinTest);
-    test.printBottomRow();
+    //SkipListNode testNode = new SkipListNode("test pass");
+    //SkipListNode testNode2 = new SkipListNode("zzzz");
+    //SkipListNode testNode3 = new SkipListNode("abc");
+    //SkipListNode testNode4 = new SkipListNode("aaa");
+    //test.insert(testNode);
+    //test.insert(testNode2);
+    //test.insert(testNode3);
+    //test.insert(testNode4);
+    //test.delete("abc");
+    //boolean empt = test.isEmpty();
+    //boolean coinTest = flipCoin();
+    //System.out.println(coinTest);
+    //coinTest = flipCoin();
+    //System.out.println(coinTest);
+    //coinTest = flipCoin();
+    //System.out.println(coinTest);
+    //test.printBottomRow();
   }
 }

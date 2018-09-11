@@ -8,6 +8,11 @@ public class NameDatabase{
     this.database = new SkipList();
   }
 
+  /**
+  * add(String) adds the names contained in a given file to the database
+  * @param String fileName - name of file to be added
+  * each line of the file is interpreted as a name to be inserted
+  */
   public void add(String fileName){
     BufferedReader reader = null;
     try{
@@ -24,9 +29,27 @@ public class NameDatabase{
 
   }
 
+  public boolean find(String name){
+    SkipListNode found = database.retrieve(name);
+    if(found == null){
+      return false;
+    }
+    return true;
+  }
+
   public static void main(String[] args){
     NameDatabase nameData = new NameDatabase();
-    //nameData.add(args[1]);
+    if(args.length < 1){
+      return;
+    }else{
+      nameData.add(args[0]);
+    }
+    boolean found = nameData.find("Bo Horvat");
+    System.out.println(found);
+    found = nameData.find("Zastre");
+    System.out.println(found);
+
+
   }
 
 
