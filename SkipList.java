@@ -16,7 +16,7 @@ public class SkipList{
 
   /**
   * isEmpty()
-  * @return boolean value indicating whether or not the list is currently isEmpty
+  * @return boolean value indicating whether or not the list is currently empty
   */
   public boolean isEmpty(){
     if(head == null){
