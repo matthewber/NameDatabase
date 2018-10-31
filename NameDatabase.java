@@ -29,6 +29,10 @@ public class NameDatabase{
 
   }
 
+  /**
+  * find(String) determines whether a name is in the database
+  * @param String name - name to be found
+  */
   public boolean find(String name){
     SkipListNode found = database.retrieve(name);
     if(found == null){
