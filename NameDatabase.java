@@ -48,11 +48,10 @@ public class NameDatabase{
     }else{
       nameData.add(args[0]);
     }
-    boolean found = nameData.find("Bo Horvat");
-    System.out.println(found);
-    found = nameData.find("Zastre");
-    System.out.println(found);
-
+    //boolean found = nameData.find("Bo Horvat");
+    //System.out.println(found);
+    //found = nameData.find("Zastre");
+    //System.out.println(found);
 
   }
 
